@@ -1,0 +1,36 @@
+html {
+  --scrollbarBG: #edf2f7;
+  --thumbBG: #718096;
+}
+body::-webkit-scrollbar {
+  width: 7px;
+}
+body {
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+body::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG);
+  border-radius: 6px;
+  border: 1px solid var(--scrollbarBG);
+}
+
+/* ------------Swiper styles------------------ */
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  width: fit-content !important;
+}
+
+/* -------------Floating filter----------- */
+.FloatingFooter {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
