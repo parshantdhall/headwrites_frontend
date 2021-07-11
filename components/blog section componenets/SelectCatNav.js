@@ -17,6 +17,8 @@ const SelectCatNav = ({ catName, catSlug }) => {
     }
   }, [currentLocation, catSlug]);
 
+  const buttonBackgroundColor = useColorModeValue("white", "_black");
+
   // This will recieve data
   return (
     <Box>
@@ -25,7 +27,7 @@ const SelectCatNav = ({ catName, catSlug }) => {
       <Link href={catSlug ? `/category/${catSlug}` : "/"} scroll={false}>
         <a title={`Go to ${catName} related blogs page`}>
           <Button
-            bg={!isActive ? useColorModeValue("white", "_black") : "_blue"}
+            bg={!isActive ? buttonBackgroundColor : "_blue"}
             color={!isActive ? "_green" : "white"}
             fontWeight="light"
             size="sm"

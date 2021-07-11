@@ -44,7 +44,9 @@ const Seo = ({
 
       <meta
         name="keywords"
-        content={keywords && keywords.length > 0 ? keywords : defaultKeywords}
+        content={
+          keywords && keywords.length > 0 ? [...keywords] : defaultKeywords
+        }
       />
 
       {/* <!-- Open Graph / Facebook --> */}

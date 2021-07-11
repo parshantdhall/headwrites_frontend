@@ -5,13 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
 
-const FootSlide = ({ Featured_image, Title, Slug }) => {
+const FootSlide = ({ featuredImage, title, slug }) => {
   const [isSmallerThanIp6] = useMediaQuery("(max-width: 350px)");
 
-  // console.dir(Featured_image);
   return (
     <Box w="fit-content">
-      <Link href={`/${Slug}`}>
+      <Link href={`/${slug}`} passHref>
         <Box
           position="relative"
           overflow="hidden"
@@ -32,8 +31,8 @@ const FootSlide = ({ Featured_image, Title, Slug }) => {
             overflow="hidden"
           >
             <Image
-              src={process.env.API_URL + Featured_image.formats.medium.url}
-              alt={Featured_image.alternativeText}
+              src={featuredImage?.url}
+              alt={featuredImage?.altText}
               layout="fill"
               objectFit="cover"
               quality={80}
@@ -62,7 +61,7 @@ const FootSlide = ({ Featured_image, Title, Slug }) => {
               color={useColorModeValue("_black", "white")}
               fontFamily="Merriweather"
             >
-              {Title}
+              {title}
             </Box>
           </Box>
         </Box>

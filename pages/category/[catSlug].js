@@ -11,7 +11,7 @@ export async function getStaticPaths() {
   const slugQuery = `
   {
   categories {
-    Slug
+    slug
   }
 }`;
 
@@ -19,7 +19,7 @@ export async function getStaticPaths() {
   const slugs =
     data && data.categories
       ? data["categories"].map((cat) => ({
-          params: { catSlug: cat.Slug },
+          params: { catSlug: cat.slug },
         }))
       : "";
   return {
@@ -32,38 +32,33 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const getSpecificArticleByCatQuery = `
 {
-  articles(sort: "published_at:desc",where: {category: {
-    category_name_containss: "${context.params.catSlug}"
-  } }) {
+  posts(orderBy: date_DESC, where:{category: {categoryName_contains: "${context.params.catSlug}"}}) {
     id
-    Title
-    Body
-    Slug,
-    Featured_image{
-      formats
-      alternativeText
-      caption
-    }
+    title
+
+    slug
+    date
     category{
-      category_name
+      categoryName
     }
-    author {
-      author_name
-      author_avatar {
-        url
-      }
+    featuredImage{
+      url
     }
-    Is_guest_post
-    published_at
-    article_tags {
-    id
-    tag_name
-  }
+    featuredPost
+    author{
+      name
+    }
+    postTags{
+      tagName
+    }
+content {
+  text
 }
-categories {
+  }
+  categories{
     id
-    category_name
-    Slug
+    categoryName
+    slug
   }
 
 }
@@ -75,7 +70,7 @@ categories {
     };
   }
 
-  const artData = data.data && data.data.articles ? data.data.articles : [];
+  const artData = data.data && data.data.posts ? data.data.posts : [];
   const catData = data.data && data.data.categories ? data.data.categories : [];
 
   return {

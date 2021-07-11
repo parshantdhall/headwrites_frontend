@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -24,17 +24,18 @@ import ColorModeSwitch from "../components/Layout components/ColorModeSwitch";
 import gFetch from "../lib/gFetch";
 import parseDate from "../lib/parseDate";
 import Seo from "../components/Seo";
-import parseHtml from "../lib/parseHtml";
 import FloatingFooter from "../components/blog section componenets/FloatingFooter";
 import FootSlider from "../components/FootSlider";
 import Footer from "../components/Footer";
-// import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import SocialShareBlock from "../components/blog section componenets/SocialShareBlock";
+import { shimmer, toBase64 } from "../lib/imageLoading";
+import ConvertPostBody from "../lib/ConvertPostBody";
+import calculateReadTime from "../lib/calculateReadTime";
 
-const SinglePostPage = ({ data }) => {
-  const article = data ? data.articles[0] : "";
-  const seoStuff = article.SEO_Component;
+const SinglePostPage = ({ data, relatedArticlesData }) => {
+  const article = data ? data.post : {};
+  const seoStuff = article.seo;
   const router = useRouter();
   const canGoBack =
     router && router.components ? ["/"] in router.components : "";
@@ -42,38 +43,13 @@ const SinglePostPage = ({ data }) => {
   const [isGreaterThan900] = useMediaQuery("(min-width: 850px)");
 
   // ---------getting related articles data-------
-  const [relatedArticles, setRelatedArticles] = useState([]);
-
+  const { posts: relatedArticlesArray } =
+    relatedArticlesData !== undefined && typeof relatedArticlesData === "object"
+      ? relatedArticlesData
+      : [];
   // -----React intersection observer-------
   const { ref, inView: articleInView } = useInView();
   const { ref: tagRef, inView: tagsInview } = useInView();
-
-  // ----------UseEffect-----------------
-  useEffect(() => {
-    (async () => {
-      try {
-        const getRelatedArticlesQuery = `{
-          articles(sort: "published_at:desc", where: {category: {
-            category_name_containss: "${article.category.category_name}"
-          },Title_ne: "${article.Title}" },){
-            id
-            Title
-            Slug,
-            Featured_image{
-              formats
-              alternativeText
-            }
-          }
-        }`;
-
-        const { data } = await gFetch(getRelatedArticlesQuery);
-        setRelatedArticles(data.articles);
-      } catch (err) {
-        console.dir(err);
-      }
-      // setRelatedArticles(data.articles ? data.articles : []);
-    })();
-  }, [article]);
 
   // -----go Back btn-------
   const goBack = () => {
@@ -87,24 +63,26 @@ const SinglePostPage = ({ data }) => {
       router.push("/");
     }
   };
-  // console.dir(article);
+
+  // ----------Cal reading time---------
+  const ert = calculateReadTime(article?.content?.text);
 
   return (
     <>
       <Seo
-        title={seoStuff && seoStuff.Page_Title ? seoStuff.Page_Title : ""}
+        title={seoStuff && seoStuff.title ? seoStuff.title : ""}
         description={
-          seoStuff && seoStuff.Page_Description ? seoStuff.Page_Description : ""
+          seoStuff && seoStuff.description ? seoStuff.description : ""
         }
         doFollowLink={
           seoStuff &&
-          (seoStuff.Is_Follow_links !== undefined ||
-            seoStuff.Is_Follow_links !== null)
-            ? seoStuff.Is_Follow_links
+          (seoStuff.isFollowLinks !== undefined ||
+            seoStuff.isFollowLinks !== null)
+            ? seoStuff.isFollowLinks
             : ""
         }
-        featuredImage={`${process.env.API_URL}${article?.Featured_image?.formats?.medium?.url}`}
-        author={article.author ? article.author.author_name : ""}
+        featuredImage={seoStuff && seoStuff.image ? seoStuff.image?.url : ""}
+        author={article.author ? article.author.name : ""}
         keywords={seoStuff && seoStuff.keywords}
       />
       <Box as="section" p={isGreaterThan900 ? 4 : ""}>
@@ -173,14 +151,15 @@ const SinglePostPage = ({ data }) => {
             zIndex="-1"
           >
             <Image
-              src={
-                process.env.API_URL +
-                article?.Featured_image?.formats?.large?.url
-              }
-              alt={article.Featured_image.alternativeText}
+              src={article?.featuredImage?.url}
+              alt={article.featuredImage?.altText}
               layout="fill"
               objectFit="cover"
               quality={100}
+              placeholder="blur"
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                shimmer(700, 475)
+              )}`}
             />
           </Box>
           {/* ---------Article Content--------- */}
@@ -200,35 +179,56 @@ const SinglePostPage = ({ data }) => {
           >
             <Box maxW="900px">
               {/* -------Category-------- */}
-              <Link
-                href={`/category/${
-                  article.category ? article.category.Slug : ""
-                }`}
-              >
-                <a
-                  title={`Go to ${
-                    article.category
-                      ? article.category.category_name
-                      : "uncategorized"
-                  } related blogs page`}
-                >
-                  <Box
-                    as="h2"
-                    fontSize={isSmallerThanIp6 ? "xs" : "sm"}
-                    bg="_blue"
-                    p={2}
-                    borderRadius="lg"
-                    width="fit-content"
-                    my={3}
-                    color="white"
-                    cursor="pointer"
-                  >
-                    {article.category
-                      ? article.category.category_name
-                      : "uncategorized"}
-                  </Box>
-                </a>
-              </Link>
+              <HStack justifyContent="space-between" alignItems="center">
+                {article.category && article.category !== null ? (
+                  <Link href={`/category/${article.category?.slug}`}>
+                    <a
+                      title={`Go to ${
+                        article.category.categoryName
+                          ? article.category.categoryName
+                          : "uncategorized"
+                      } related blogs page`}
+                    >
+                      <Box
+                        fontSize={isSmallerThanIp6 ? "xs" : "sm"}
+                        bg="_blue"
+                        p={2}
+                        borderRadius="lg"
+                        width="fit-content"
+                        my={3}
+                        color="white"
+                        cursor="pointer"
+                      >
+                        {article.category.categoryName
+                          ? article.category.categoryName
+                          : "uncategorized"}
+                      </Box>
+                    </a>
+                  </Link>
+                ) : (
+                  <Link href={`/`}>
+                    <a title={`Go to ${"uncategorized"} related blogs page`}>
+                      <Box
+                        fontSize={isSmallerThanIp6 ? "xs" : "sm"}
+                        bg="_blue"
+                        p={2}
+                        borderRadius="lg"
+                        width="fit-content"
+                        my={3}
+                        color="white"
+                        cursor="pointer"
+                      >
+                        {"Uncategorized"}
+                      </Box>
+                    </a>
+                  </Link>
+                )}
+                <Box>
+                  <Text
+                    color={useColorModeValue("_blue", "_green")}
+                  >{`${ert.min} min ${ert.sec} secs`}</Text>
+                </Box>
+              </HStack>
               {/* -----------Title------------ */}
               <Heading
                 aria-label="Article title"
@@ -240,7 +240,7 @@ const SinglePostPage = ({ data }) => {
                 color={useColorModeValue("_black", "white")}
                 fontSize={isSmallerThanIp6 ? "3xl" : "4xl"}
               >
-                {article.Title}
+                {article.title}
               </Heading>
 
               {/* Article Body */}
@@ -253,17 +253,18 @@ const SinglePostPage = ({ data }) => {
                 fontFamily="Montserrat"
                 lineHeight="tall"
                 ref={ref}
+                position="relative"
               >
-                {parseHtml(article.Body)}
+                {<ConvertPostBody postcontent={article.content.raw} />}
               </Box>
               {/* -------Tags-------- */}
               <HStack spacing={2} my={2} ref={tagRef}>
-                {article.article_tags.length > 0
-                  ? article.article_tags.map((tag) => (
-                      <Link key={tag.id} href={`/tag/${tag.tag_name}`}>
-                        <a title={`go to ${tag.tag_name} tag page`}>
+                {article.postTags.length > 0
+                  ? article.postTags.map((tag) => (
+                      <Link key={tag.id} href={`/tag/${tag.tagSlug}`}>
+                        <a title={`go to ${tag.tagName} tag page`}>
                           <Tag size="md" colorScheme="cyan" cursor="pointer">
-                            <TagLabel>#{tag.tag_name}</TagLabel>
+                            <TagLabel>#{tag.tagName}</TagLabel>
                           </Tag>
                         </a>
                       </Link>
@@ -281,21 +282,17 @@ const SinglePostPage = ({ data }) => {
                 minW="200px"
               >
                 <SocialShareBlock
-                  title={article.Title}
+                  title={article.title}
                   url={router.asPath}
-                  featuredImage={article?.Featured_image?.formats?.medium?.url}
+                  featuredImage={article?.FeaturedImage?.url}
                 />
               </Box>
               <Divider />
               <HStack spacing={3} my={3} alignItems="center">
                 <Avatar
                   size={isSmallerThanIp6 ? "sm" : "md"}
-                  name={article.author ? article.author.author_name : ""}
-                  src={
-                    article.author
-                      ? `${process.env.API_URL}${article?.author?.author_avatar?.url}`
-                      : ""
-                  }
+                  name={article.author ? article.author.name : "Parshant dhall"}
+                  src={article.author ? article?.author?.picture?.url : ""}
                 />
                 <VStack spacing={1} alignItems="flex-start" p={2}>
                   <Text
@@ -303,14 +300,14 @@ const SinglePostPage = ({ data }) => {
                     fontSize={isSmallerThanIp6 ? "sm" : "md"}
                     color={useColorModeValue("_black", "white")}
                   >
-                    {article.author ? article.author.author_name : "Anon"}
+                    {article.author ? article.author.name : "Anon"}
                   </Text>
                   <Text
                     as="p"
                     fontSize={isSmallerThanIp6 ? "xs" : "sm"}
                     color={useColorModeValue("_blue", "_green")}
                   >
-                    {parseDate(article.published_at)}
+                    {parseDate(article?.date)}
                   </Text>
                 </VStack>
               </HStack>
@@ -320,16 +317,16 @@ const SinglePostPage = ({ data }) => {
       </Box>
       {/* ----------Related article slider----------- */}
 
-      <FootSlider artData={relatedArticles} />
+      <FootSlider artData={relatedArticlesArray} />
 
       {/* --------Social Media Floating footer---------- */}
       {!isGreaterThan900 ? (
         <FloatingFooter
-          title={article.Title}
+          title={article.title}
           url={router.asPath}
           articleInView={articleInView}
           tagsInView={tagsInview}
-          featuredImage={article?.Featured_image?.formats?.medium?.url}
+          featuredImage={article?.FeaturedImage?.url}
         />
       ) : (
         ""
@@ -345,14 +342,14 @@ const SinglePostPage = ({ data }) => {
 export default memo(SinglePostPage);
 
 export async function getStaticPaths() {
-  const slugQuery = `{articles {
-    Slug
+  const slugQuery = `{posts {
+    slug
   }}`;
   const { data } = await gFetch(slugQuery);
   const slugs =
-    data && data.articles
-      ? data["articles"].map((article) => ({
-          params: { postSlug: article.Slug },
+    data && data.posts
+      ? data["posts"].map((post) => ({
+          params: { postSlug: post.slug },
         }))
       : "";
   return {
@@ -364,44 +361,73 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const getSpecificArticleQuery = `
 {
-  articles(where: {Slug_containss: "${context.params.postSlug}"}) {
-    id
-    Title
-    Body
-    Slug,
-    Featured_image{
-      formats
-      alternativeText
-      caption
+  post(where: {slug: "${context.params.postSlug}"}) {
+     id
+    title
+    content{
+      raw
+      text
     }
+    slug
+    date
     category{
-      category_name
-      Slug
+      id
+      slug
+      categoryName
     }
-    author {
-      author_name
-      author_avatar {
+    featuredImage{
+      url
+    }
+    featuredPost
+    author{
+      name
+    }
+    postTags{
+      id
+      tagName
+      tagSlug
+    }
+    seo{
+      title
+      description
+      image{
         url
       }
-    }
-    Is_guest_post
-    published_at
-    SEO_Component {
-      Page_Title
-      Page_Description
-      Is_Follow_links
       keywords
-  }
-  article_tags {
-    id
-    tag_name
+      isFollowLinks
+    }
   }
 }
-}
+
 `;
   const { data } = await gFetch(getSpecificArticleQuery);
-
+  // Getting related articles
+  if (data.post && data.post.category && data.post.category !== null) {
+    try {
+      const getRelatedArticlesQuery = `{
+        posts(orderBy: date_DESC, where: {category: {categoryName_contains: "${data.post.category.categoryName}"},
+        title_not_contains: "${data.post.title}"}){
+          id
+          title
+          slug,
+          featuredImage {
+            url
+                altText
+              }
+            }
+          }`;
+      const { data: relatedArticlesData } = await gFetch(
+        getRelatedArticlesQuery
+      );
+      // console.log(relatedArticlesData);
+      return {
+        props: { data, relatedArticlesData }, // will be passed to the page component as props
+      };
+    } catch (e) {
+      console.log(e);
+    }
+  }
   return {
-    props: { data }, // will be passed to the page component as props
+    props: { data },
   };
 }

@@ -3,12 +3,9 @@ require("dotenv").config();
 module.exports = {
   env: {
     API_URL: process.env.API_URL,
+    API_MEDIA_URL: process.env.API_MEDIA_URL,
   },
   images: {
-    domains: [
-      "strapi-d200.onrender.com",
-      "strapi-d200.onrender.comhttps",
-      "strapi-d200.onrender.comundefined",
-    ],
+    domains: [process.env.API_MEDIA_URL],
   },
 };

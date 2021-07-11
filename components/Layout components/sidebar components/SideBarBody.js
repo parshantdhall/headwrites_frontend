@@ -14,7 +14,7 @@ const SideBarBody = () => {
   return (
     <VStack spacing="30" w="full" my={4} px={3}>
       {/* Link */}
-      <Link href="/">
+      <Link href="/" passHref>
         <HStack spacing="3" w="full" cursor="pointer">
           <Box
             px="8px"
@@ -42,7 +42,7 @@ const SideBarBody = () => {
         </HStack>
       </Link>
 
-      <Link href="/about">
+      <Link href="/about" passHref>
         <HStack spacing="3" w="full" cursor="pointer">
           <Box px="8px" py="6px" bgColor="_lightGrey" borderRadius="lg">
             <Icon as={FiUsers} color="_darkGrey" w={5} h={5} />

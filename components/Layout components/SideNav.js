@@ -41,7 +41,7 @@ const SideNav = () => {
 
         {/* sidebar footer */}
         <Spacer />
-        <Box p={3}>
+        <Box p={2}>
           <SideBarFooter />
         </Box>
       </Box>

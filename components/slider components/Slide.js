@@ -4,11 +4,11 @@ import { useColorModeValue } from "@chakra-ui/color-mode";
 import { useMediaQuery } from "@chakra-ui/media-query";
 import Link from "next/link";
 
-const Slide = ({ Featured_image, Title, category, Slug }) => {
+const Slide = ({ featuredImage, title, category, slug }) => {
   // Using media queries
   const [isGreaterThan900] = useMediaQuery("(min-width: 850px)");
   return (
-    <Link href={`/${Slug}`}>
+    <Link href={`/${slug}`} passHref>
       <VStack
         alignItems="flex-start"
         spacing={2}
@@ -32,8 +32,8 @@ const Slide = ({ Featured_image, Title, category, Slug }) => {
               },
             }}
           >
-            {category && category.category_name
-              ? category.category_name
+            {category && category.categoryName
+              ? category.categoryName
               : "uncategorized"}
           </Text>
           <Text
@@ -54,7 +54,7 @@ const Slide = ({ Featured_image, Title, category, Slug }) => {
               },
             }}
           >
-            {Title}
+            {title}
           </Text>
         </Box>
 
@@ -76,12 +76,14 @@ const Slide = ({ Featured_image, Title, category, Slug }) => {
           }}
         >
           <Image
-            src={process.env.API_URL + Featured_image?.formats?.medium?.url}
+            src={featuredImage?.url}
             layout="fill"
             objectFit="cover"
             aria-label="Featured post image."
-            quality={100}
-            alt={Featured_image.alternativeText}
+            quality={80}
+            alt={
+              featuredImage?.altText ? featuredImage?.altText : "Featured image"
+            }
           />
         </Box>
       </VStack>

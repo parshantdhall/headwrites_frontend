@@ -3,7 +3,7 @@ import FuzzySearch from "fuzzy-search";
 import { Box } from "@chakra-ui/react";
 import Layout from "./Layout";
 import BlogSection from "./BlogSection";
-import Slider from "./Slider";
+import FeaturedArticleSlider from "./FeaturedArticleSlider";
 
 const MainPageComponents = ({ artData, catData }) => {
   // --------------COnfiguring Loadmore -------
@@ -17,15 +17,15 @@ const MainPageComponents = ({ artData, catData }) => {
   useEffect(() => {
     updateNumOfArticlesLeft(allowedNumOfArticles);
     setNumOfArticles(allowedNumOfArticles);
-  }, [artData]);
+  }, [allowedNumOfArticles]);
   // Slicing the number of articles to show
   const slicedArticlesData = artData.slice(0, numOfArticles);
   // -------------search query---------
   const [searchKeyword, setSearchKeyword] = useState("");
   const searcher = new FuzzySearch(slicedArticlesData, [
-    "Title",
-    "author.author_name",
-    "article_tags.tag_name",
+    "title",
+    "author.name",
+    "postTags.tagName",
   ]);
   const searchResult = searcher.search(searchKeyword);
 
@@ -64,7 +64,7 @@ const MainPageComponents = ({ artData, catData }) => {
     >
       <Box px={6} mt={5}>
         {/* <StorySection /> */}
-        {/* --------Slider Section---------- */}
+        {/* --------Featured Article Slider Section---------- */}
         <Box
           as="section"
           aria-label="Featured Blogs Section"
@@ -72,7 +72,7 @@ const MainPageComponents = ({ artData, catData }) => {
           w="100%"
           display={searchKeyword.length > 0 ? "none" : "block"}
         >
-          <Slider />
+          <FeaturedArticleSlider articleData={artData} />
         </Box>
         {/* -----------Blog Section------- */}
         <BlogSection

@@ -33,9 +33,9 @@ const TagSpecificPage = ({ artData }) => {
   // -------------search query---------
   const [searchKeyword, setSearchKeyword] = useState("");
   const searcher = new FuzzySearch(slicedArticlesData, [
-    "Title",
-    "author.author_name",
-    "article_tags.tag_name",
+    "title",
+    "author.name",
+    "postTags.tagName",
   ]);
   const searchResult = searcher.search(searchKeyword);
 
@@ -126,16 +126,16 @@ const TagSpecificPage = ({ artData }) => {
 
 export async function getStaticPaths() {
   const slugQuery = `{
-         articleTags {
-            tag_name
+         tags {
+            tagSlug
             }
          }`;
 
   const { data } = await gFetch(slugQuery);
   const slugs =
-    data && data.articleTags
-      ? data.articleTags.map((tag) => ({
-          params: { tagSlug: tag.tag_name },
+    data && data.tags
+      ? data.tags.map((tag) => ({
+          params: { tagSlug: tag.tagSlug },
         }))
       : "";
 
@@ -149,35 +149,23 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const getSpecificArticleByCatQuery = `
 {
-  articles(sort: "published_at:desc",where: {article_tags: {
-    tag_name_containss: "${context.params.tagSlug}"
-  } }) {
-    id
-    Title
-    Body
-    Slug,
-    Featured_image{
-      formats
-      alternativeText
-      caption
-    }
+  tag(where: {tagSlug: "${context.params.tagSlug}"}) {
+    relatedPosts {
+id
+    title
+    slug
+    date
     category{
-      category_name
+      categoryName
     }
-    author {
-      author_name
-      author_avatar {
-        url
-      }
+    featuredImage{
+      url
     }
-    Is_guest_post
-    published_at
-    article_tags {
-    id
-    tag_name
-  }
+    author{
+      name
+    }
+    }
 }
-
 }
   `;
   const data = await gFetch(getSpecificArticleByCatQuery);
@@ -187,7 +175,7 @@ export async function getStaticProps(context) {
     };
   }
 
-  const artData = data.data && data.data.articles ? data.data.articles : [];
+  const artData = data.data && data.data.tag ? data.data.tag?.relatedPosts : [];
 
   return {
     props: {

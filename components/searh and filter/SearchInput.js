@@ -31,7 +31,9 @@ const SearchInput = ({ searchKeyword, setSearchKeyword }) => {
               color: "gray.300",
             }}
           />
-          <InputLeftElement pointerEvents="none" children={<FaSearch />} />
+          <InputLeftElement pointerEvents="none">
+            <FaSearch />
+          </InputLeftElement>{" "}
         </InputGroup>
       </form>
     </Box>

@@ -12,6 +12,7 @@ import Link from "next/link";
 import parseDate from "../../lib/parseDate";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import calculateReadTime from "../../lib/calculateReadTime";
 
 const SquareBlogCard = ({ article, indexNum }) => {
   // Media query for screen smaller than iphone 6
@@ -27,6 +28,11 @@ const SquareBlogCard = ({ article, indexNum }) => {
       scale: 1,
     },
   };
+
+  const categoryColor = useColorModeValue("_blue", "_green");
+  // Estimated readtime
+  // console.dir(article);
+  const ert = calculateReadTime(article?.content?.text);
   return (
     <motion.div
       variants={containerVariants}
@@ -44,110 +50,121 @@ const SquareBlogCard = ({ article, indexNum }) => {
       }}
       id={`sqCard_${article.id}`}
     >
-      <Link href={`/${article.Slug}`}>
-        <Box
-          position="relative"
-          overflow="hidden"
-          minH="sm"
-          maxW="sm"
-          cursor="pointer"
-          borderRadius="3xl"
-        >
-          {/* Featured image */}
+      <Link href={`/${article.slug}`} passHref>
+        <a>
           <Box
-            position="absolute"
-            top="0"
-            left="0"
-            minW="100%"
-            minH="100%"
-            aria-label="Article featured image"
+            position="relative"
             overflow="hidden"
-          >
-            <Image
-              src={
-                process.env.API_URL +
-                article.Featured_image?.formats?.medium?.url
-              }
-              alt={article.Featured_image.alternativeText}
-              layout="fill"
-              objectFit="cover"
-              quality={80}
-            />
-          </Box>
-          {/* Card Content */}
-          <Box
-            p={4}
-            bg={useColorModeValue("white", "_black")}
-            position="absolute"
-            left="0"
-            bottom="0"
-            m={3}
+            minH="sm"
+            maxW="sm"
+            cursor="pointer"
             borderRadius="3xl"
-            minW={isSmallerThanIp6 ? "90" : "93.75%"}
           >
-            {/* Category */}
-            <Text
-              as="h2"
-              fontSize={isSmallerThanIp6 ? "xs" : "sm"}
-              color={useColorModeValue("_blue", "_green")}
-              fontFamily="quicksand"
-            >
-              {article.category
-                ? article.category.category_name
-                : "uncategorized"}
-            </Text>
-            {/* title */}
+            {/* Featured image */}
             <Box
-              mt={1}
-              aria-label="Article title"
-              fontWeight="semibold"
-              letterSpacing="xs"
-              lineHeight="shorter"
-              as="h1"
-              fontSize={isSmallerThanIp6 ? "lg" : "xl"}
-              color={useColorModeValue("_black", "white")}
-              fontFamily="Merriweather"
+              position="absolute"
+              top="0"
+              left="0"
+              minW="100%"
+              minH="100%"
+              aria-label="Article featured image"
+              overflow="hidden"
             >
-              {article.Title}
+              <Image
+                src={article?.featuredImage?.url}
+                alt={
+                  article?.featuredImage.altText
+                    ? article?.featuredImage.altText
+                    : ""
+                }
+                layout="fill"
+                objectFit="cover"
+                quality={80}
+              />
             </Box>
-            {/* footer */}
-            <Flex
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-              mt={3}
+            {/* Card Content */}
+            <Box
+              p={4}
+              bg={useColorModeValue("white", "_black")}
+              position="absolute"
+              left="0"
+              bottom="0"
+              m={3}
+              borderRadius="3xl"
+              minW={isSmallerThanIp6 ? "90" : "93.75%"}
             >
-              <HStack spacing={2} wrap="nowrap" mt={1}>
-                <Avatar
-                  aria-label="author profile image"
-                  size={isSmallerThanIp6 ? "xs" : "sm"}
-                  name={article.author ? article.author.author_name : ""}
-                  src={
-                    article.author
-                      ? `${process.env.API_URL}${article.author?.author_avatar?.url}`
-                      : ""
-                  }
-                />
-                <Box>
-                  <Text
-                    as="p"
-                    fontSize={isSmallerThanIp6 ? "xs" : "sm"}
-                    color={useColorModeValue("_black", "white")}
-                  >
-                    {article.author ? article.author.author_name : "Anon"}
-                  </Text>
-                </Box>
+              {/*----------- Category ----------*/}
+              <HStack justifyContent="space-between" alignItems="center">
+                <Text
+                  as="h2"
+                  fontSize={isSmallerThanIp6 ? "xs" : "sm"}
+                  color={categoryColor}
+                  fontFamily="quicksand"
+                >
+                  {article.category && article.category !== null
+                    ? article.category.categoryName
+                    : "Uncategorized"}
+                </Text>
+
+                {/* ----------Read Time----- */}
+                <Text
+                  as="h2"
+                  fontSize={isSmallerThanIp6 ? "xs" : "sm"}
+                  color={categoryColor}
+                  fontFamily="quicksand"
+                >
+                  {`${ert.min}mins ${ert.sec} secs`}
+                </Text>
               </HStack>
-              <Text
-                color={useColorModeValue("_blue", "_green")}
-                fontSize={isSmallerThanIp6 ? "xs" : "sm"}
-                as="p"
+              {/* title */}
+              <Box
+                mt={1}
+                aria-label="Article title"
+                fontWeight="semibold"
+                letterSpacing="xs"
+                lineHeight="shorter"
+                as="h1"
+                fontSize={isSmallerThanIp6 ? "lg" : "xl"}
+                color={useColorModeValue("_black", "white")}
+                fontFamily="Merriweather"
               >
-                {parseDate(article.published_at)}
-              </Text>
-            </Flex>
+                {article.title}
+              </Box>
+              {/* footer */}
+              <Flex
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+                mt={3}
+              >
+                <HStack spacing={2} wrap="nowrap" mt={1}>
+                  <Avatar
+                    aria-label="author profile image"
+                    size={isSmallerThanIp6 ? "xs" : "sm"}
+                    name={article.author ? article.author.name : "Anon"}
+                    src={article.author ? article.author?.picture : ""}
+                  />
+                  <Box>
+                    <Text
+                      as="p"
+                      fontSize={isSmallerThanIp6 ? "xs" : "sm"}
+                      color={useColorModeValue("_black", "white")}
+                    >
+                      {article.author ? article.author.name : "Anon"}
+                    </Text>
+                  </Box>
+                </HStack>
+                <Text
+                  color={useColorModeValue("_blue", "_green")}
+                  fontSize={isSmallerThanIp6 ? "xs" : "sm"}
+                  as="p"
+                >
+                  {parseDate(article?.date)}
+                </Text>
+              </Flex>
+            </Box>
           </Box>
-        </Box>
+        </a>
       </Link>
     </motion.div>
   );

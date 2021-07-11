@@ -14,20 +14,20 @@ export const getServerSideProps = async ({ res }) => {
   //   ------------Fetching article slugs---------
   const articleQuery = `
      {
-      articles {
-         Slug
+      posts {
+         slug
       }
     }
    `;
   const { data: articleData } = await gFetch(articleQuery);
 
-  const allArticleSlugs = articleData?.articles || [];
+  const allArticleSlugs = articleData?.posts || [];
   //   ------------Fetching Category slugs---------
 
   const categoryQuery = `
      {
       categories {
-         Slug
+         slug
       }
     }
    `;
@@ -38,13 +38,13 @@ export const getServerSideProps = async ({ res }) => {
   //   ------------Fetching Tag slugs---------
 
   const tagQuery = `{
-         articleTags {
-            tag_name
+         tags {
+            tagSlug
             }
          }`;
   const { data: tagData } = await gFetch(tagQuery);
 
-  const allTagSlugs = tagData?.articleTags || [];
+  const allTagSlugs = tagData?.tags || [];
   //   -------Fetching ends here----------------
   const staticPages = fs
     .readdirSync("pages")
@@ -63,6 +63,9 @@ export const getServerSideProps = async ({ res }) => {
       ].includes(staticPage);
     })
     .map((staticPagePath) => {
+      if (staticPagePath.split(".")[0] === "index") {
+        return `${baseUrl}/`;
+      }
       return `${baseUrl}/${staticPagePath.split(".")[0]}`;
     });
 
@@ -86,7 +89,7 @@ export const getServerSideProps = async ({ res }) => {
           .map((dataItem) => {
             return `
             <url>
-              <loc>${baseUrl}/${dataItem.Slug}</loc>
+              <loc>${baseUrl}/${dataItem.slug}</loc>
               <lastmod>${new Date().toISOString()}</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>
@@ -100,7 +103,7 @@ export const getServerSideProps = async ({ res }) => {
           .map((dataItem) => {
             return `
             <url>
-              <loc>${baseUrl}/category/${dataItem.Slug}</loc>
+              <loc>${baseUrl}/category/${dataItem.slug}</loc>
               <lastmod>${new Date().toISOString()}</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>
@@ -113,7 +116,7 @@ export const getServerSideProps = async ({ res }) => {
             .map((dataItem) => {
               return `
             <url>
-              <loc>${baseUrl}/tag/${dataItem.tag_name}</loc>
+              <loc>${baseUrl}/tag/${dataItem.tagSlug}</loc>
               <lastmod>${new Date().toISOString()}</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>

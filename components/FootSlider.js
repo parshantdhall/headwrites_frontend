@@ -4,15 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import FootSlide from "./slider components/FootSlide";
 
 const FootSlider = ({ artData }) => {
-  return artData.length > 0 ? (
-    <Box
-      as="section"
-      w="100%"
-      my={6}
-      p={4}
-      pb={10}
-      bgColor={useColorModeValue("gray.100", "#0e1111")}
-    >
+  const bgCol = useColorModeValue("gray.100", "#0e1111");
+  return artData && artData.length > 0 ? (
+    <Box as="section" w="100%" my={6} p={4} pb={10} bgColor={bgCol}>
       <Heading as="h2" my={3} fontFamily="Montserrat" textAlign="center">
         {" "}
         Related Posts

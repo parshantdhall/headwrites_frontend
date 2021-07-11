@@ -10,7 +10,6 @@ import gFetch from "../../../lib/gFetch";
 
 const SideBarFooter = () => {
   const [socialMediaData, setSocialMediaData] = useState([]);
-
   useEffect(() => {
     (async () => {
       const socialMediaDataQuery = `{
@@ -27,7 +26,7 @@ const SideBarFooter = () => {
         console.dir(e);
       }
     })();
-  }, [""]);
+  }, []);
 
   const findSocialLink = (platformName) => {
     const foundItem = socialMediaData.find(
@@ -42,12 +41,13 @@ const SideBarFooter = () => {
   return (
     <Box w="full">
       <HStack
+        justifyContent="space-around"
+        alignItems="center"
         spacing="6"
         p={2}
         px={3}
         boxShadow="base"
         borderRadius="xl"
-        w="fit-content"
         margin="0 auto"
       >
         <Box>

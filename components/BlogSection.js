@@ -41,7 +41,6 @@ const BlogSection = ({
         <SectionHeading headingText="Blogs" />
         <Icon as={RiPagesLine} color="_green" boxSize="1.3em" />
         <Spacer />
-        {/* <FilterCat /> */}
       </HStack>
       {/* Cat Menu */}
       <Box
@@ -66,7 +65,7 @@ const BlogSection = ({
           {categoryData &&
             categoryData.map((cat) => (
               <SwiperSlide key={cat.id}>
-                <SelectCatNav catName={cat.category_name} catSlug={cat.Slug} />
+                <SelectCatNav catName={cat.categoryName} catSlug={cat.slug} />
               </SwiperSlide>
             ))}
         </Swiper>
@@ -84,7 +83,7 @@ const BlogSection = ({
             ))}
           </SimpleGrid>
           <Center>
-            {numOfArticlesLeft > 0 ? (
+            {numOfArticlesLeft > 0 && searchKeyword.length <= 0 ? (
               <Button
                 color="white"
                 bgColor="_blue"

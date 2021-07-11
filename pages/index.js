@@ -9,41 +9,35 @@ export default function Home({ artData, catData }) {
 export async function getStaticProps() {
   const articleQuery = `
      {
-      articles(sort: "published_at:desc") {
+  posts(orderBy: date_DESC) {
     id
-    Title
-    Slug
-    category {
-      category_name
+    title
+    slug
+    date
+    category{
+      categoryName
     }
-    author {
-      author_name
-      author_avatar {
-        url
+    featuredImage{
+      url
+    }
+    featuredPost
+    author{
+      name
+    }
+    postTags{
+      tagName
+    }
+    content{
+        text
       }
-    }
-    Featured_image{
-      formats
-      alternativeText
-      caption
-    }
-    Is_guest_post
-    is_featured
-    published_at
-    article_tags {
+  }
+  categories{
     id
-    tag_name
+    categoryName
+    slug
   }
-  }
-
-    categories {
-    id
-    category_name
-    Slug
-  }
-    }
+}
    `;
-
   const data = await gFetch(articleQuery);
   if (!data) {
     return {
@@ -51,7 +45,7 @@ export async function getStaticProps() {
     };
   }
 
-  const artData = data.data && data.data.articles ? data.data.articles : [];
+  const artData = data.data && data.data.posts ? data.data.posts : [];
   const catData = data.data && data.data.categories ? data.data.categories : [];
 
   return {
