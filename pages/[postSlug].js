@@ -135,12 +135,7 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
           <ColorModeSwitch />
         </Flex>
         {/* ---------------Body--------------- */}
-        <Box
-          as="section"
-          aria-label="Article content section"
-          width="100%"
-          id="article"
-        >
+        <Box as="main" role="Article content section" width="100%" id="article">
           {/* ------Featured Image------- */}
           <Box
             width="100%"
@@ -162,9 +157,9 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
               )}`}
             />
           </Box>
-          {/* ---------Article Content--------- */}
+          {/* -------------------------------Article Content-------------------------- */}
           <Box
-            as="main"
+            as="article"
             bg={useColorModeValue("white", "rgb(26, 32, 44)")}
             p={6}
             mt="-4rem"
@@ -190,6 +185,7 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                       } related blogs page`}
                     >
                       <Box
+                        role="article's category"
                         fontSize={isSmallerThanIp6 ? "xs" : "sm"}
                         bg="_blue"
                         p={2}
@@ -243,9 +239,9 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                 {article.title}
               </Heading>
 
-              {/* Article Body */}
+              {/* ---------Article Body---------- */}
               <Box
-                as="article"
+                role="article body"
                 my={3}
                 aria-label="article body"
                 fontSize={isGreaterThan900 ? "18px" : "md"}
@@ -288,10 +284,11 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                 />
               </Box>
               <Divider />
+              {/* -----------Author details---------- */}
               <HStack spacing={3} my={3} alignItems="center">
                 <Avatar
                   size={isSmallerThanIp6 ? "sm" : "md"}
-                  name={article.author ? article.author.name : "Parshant dhall"}
+                  name={article.author ? article.author.name : "Anon"}
                   src={article.author ? article?.author?.picture?.url : ""}
                 />
                 <VStack spacing={1} alignItems="flex-start" p={2}>
