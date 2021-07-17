@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 
 import { FiHome, FiUsers } from "react-icons/fi";
-const SideBarBody = () => {
+const SideBarBody = ({ pageLinks }) => {
   return (
     <VStack spacing="30" w="full" my={4} px={3}>
       {/* Link */}
@@ -42,7 +42,7 @@ const SideBarBody = () => {
         </HStack>
       </Link>
 
-      <Link href="/about" passHref>
+      <Link href="/page/about" passHref>
         <HStack spacing="3" w="full" cursor="pointer">
           <Box px="8px" py="6px" bgColor="_lightGrey" borderRadius="lg">
             <Icon as={FiUsers} color="_darkGrey" w={5} h={5} />
