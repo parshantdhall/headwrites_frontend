@@ -3,7 +3,7 @@ import SideBarBody from "./sidebar components/SideBarBody";
 import SideBarFooter from "./sidebar components/SideBarFooter";
 import SideBarHeader from "./sidebar components/SideBarHeader";
 
-const SideNav = ({ links }) => {
+const SideNav = () => {
   return (
     <Box
       w="20%"
@@ -36,7 +36,7 @@ const SideNav = ({ links }) => {
         {/* ---Side bar Body------- */}
 
         <Box flex="1" w="full">
-          <SideBarBody pageLinks={links} />
+          <SideBarBody />
         </Box>
 
         {/* sidebar footer */}

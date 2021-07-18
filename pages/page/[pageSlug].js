@@ -21,7 +21,6 @@ import ConvertPostBody from "../../lib/ConvertPostBody";
 
 const AllOtherPages = ({ data }) => {
   const { page } = data;
-  const { pages } = data;
 
   // Using media queries
   const [isGreaterThan900] = useMediaQuery("(min-width: 850px)");
@@ -36,7 +35,7 @@ const AllOtherPages = ({ data }) => {
         featuredImage={page?.seo?.image?.url}
         author="Parshant Dhall"
       />
-      {isGreaterThan900 ? <SideNav links={pages} /> : ""}
+      {isGreaterThan900 ? <SideNav /> : ""}
 
       <Box
         role="page container"
@@ -83,10 +82,10 @@ const AllOtherPages = ({ data }) => {
                 pb={6}
                 color="white"
                 fontFamily="Montserrat"
-                fontSize="xl"
+                fontSize={isGreaterThan900 ? "xl" : "lg"}
                 w="full"
               >
-                <Heading as="h1" fontSize="5xl">
+                <Heading as="h1" fontSize={isGreaterThan900 ? "5xl" : "4xl"}>
                   {page?.title}
                 </Heading>
                 <Text mt={1}>
@@ -105,7 +104,7 @@ const AllOtherPages = ({ data }) => {
                 ""
               )}
             </Flex>
-            <Box as="main" mt={3}>
+            <Box as="main" my={3}>
               <Text as="p" fontSize="lg" fontFamily="Montserrat">
                 {<ConvertPostBody postcontent={page?.content?.raw} />}
               </Text>
@@ -163,9 +162,6 @@ export async function getStaticProps(context) {
         keywords
         isFollowLinks
       }
-    }
-    pages{
-      slug
     }
   }
   

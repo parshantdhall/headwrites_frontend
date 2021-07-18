@@ -6,7 +6,6 @@ import { Box, Button, useColorModeValue } from "@chakra-ui/react";
 const SelectCatNav = ({ catName, catSlug }) => {
   const router = useRouter();
   const currentLocation = router.query.catSlug;
-  // const isActive = String(currentLocation) == String(catSlug);
 
   const [isActive, setIsActive] = useState(false);
   useEffect(() => {
