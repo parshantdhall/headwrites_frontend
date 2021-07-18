@@ -15,7 +15,6 @@ const ScrollToTop = () => {
   const handleScrollToTop = () => {
     window && window.scrollTo(0, 0);
   };
-  console.dir(offSetY);
   return (
     <IconButton
       borderRadius="full"
