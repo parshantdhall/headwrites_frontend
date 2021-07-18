@@ -158,6 +158,9 @@ id
     category{
       categoryName
     }
+    content{
+        text
+    }
     featuredImage{
       url
     }
