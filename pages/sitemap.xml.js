@@ -45,7 +45,19 @@ export const getServerSideProps = async ({ res }) => {
   const { data: tagData } = await gFetch(tagQuery);
 
   const allTagSlugs = tagData?.tags || [];
+
+  //   ------------Fetching Another Pages slugs---------
+
+  const anotherPageQuery = `{
+         pages {
+            slug
+            }
+         }`;
+  const { data: anotherPageData } = await gFetch(anotherPageQuery);
+
+  const allAnotherPageSlugs = anotherPageData?.pages || [];
   //   -------Fetching ends here----------------
+
   const staticPages = fs
     .readdirSync("pages")
     .filter((staticPage) => {
@@ -60,6 +72,7 @@ export const getServerSideProps = async ({ res }) => {
         "tag",
         "category",
         "story",
+        "page",
       ].includes(staticPage);
     })
     .map((staticPagePath) => {
@@ -124,6 +137,19 @@ export const getServerSideProps = async ({ res }) => {
           `;
             })
             .join("")}
+
+            ${allAnotherPageSlugs
+              .map((dataItem) => {
+                return `
+            <url>
+              <loc>${baseUrl}/page/${dataItem.slug}</loc>
+              <lastmod>${new Date().toISOString()}</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>1.0</priority>
+            </url>
+          `;
+              })
+              .join("")}
     </urlset>
   `;
 

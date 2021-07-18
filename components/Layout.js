@@ -7,6 +7,7 @@ import SideNav from "./Layout components/SideNav";
 import ColorModeSwitch from "./Layout components/ColorModeSwitch";
 import Seo from "./Seo";
 import Footer from "./Footer";
+import ScrollToTop from "./Layout components/ScrollToTop";
 
 const Layout = ({ children, searchKeyword, setSearchKeyword }) => {
   // Using media queries
@@ -29,6 +30,7 @@ const Layout = ({ children, searchKeyword, setSearchKeyword }) => {
         }}
         ml="auto"
         mr="0"
+        pos="relative"
       >
         <Box position="relative" minH="100vh">
           {isGreaterThan900 ? "" : <PageHeader />}
@@ -60,6 +62,8 @@ const Layout = ({ children, searchKeyword, setSearchKeyword }) => {
           <Footer />
         </Box>
       </Box>
+      {/* ------FLoating scroll to top btn------ */}
+      <ScrollToTop />
     </>
   );
 };

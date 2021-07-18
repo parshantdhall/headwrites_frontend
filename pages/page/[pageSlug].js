@@ -1,6 +1,13 @@
 import { memo } from "react";
 import Image from "next/image";
-import { Box, Flex, Spacer, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Spacer,
+  Heading,
+  useMediaQuery,
+  Text,
+} from "@chakra-ui/react";
 
 import PageHeader from "../../components/Layout components/PageHeader";
 
@@ -10,16 +17,25 @@ import Seo from "../../components/Seo";
 import Footer from "../../components/Footer";
 import gFetch from "../../lib/gFetch";
 import { shimmer, toBase64 } from "../../lib/imageLoading";
+import ConvertPostBody from "../../lib/ConvertPostBody";
 
 const AllOtherPages = ({ data }) => {
   const { page } = data;
   const { pages } = data;
+
   // Using media queries
   const [isGreaterThan900] = useMediaQuery("(min-width: 850px)");
 
   return (
     <>
-      <Seo />
+      <Seo
+        title={page?.seo?.title}
+        description={page?.seo?.description}
+        keywords={page?.seo?.keywords}
+        doFollowLink={page?.seo?.isFollowLinks}
+        featuredImage={page?.seo?.image?.url}
+        author="Parshant Dhall"
+      />
       {isGreaterThan900 ? <SideNav links={pages} /> : ""}
 
       <Box
@@ -50,7 +66,7 @@ const AllOtherPages = ({ data }) => {
               {/* --------Featured Image----- */}
               <Image
                 src={page?.featuredImage?.url}
-                alt={page.featuredImage?.altText}
+                alt={page?.featuredImage?.altText}
                 layout="fill"
                 objectFit="cover"
                 quality={100}
@@ -59,7 +75,25 @@ const AllOtherPages = ({ data }) => {
                   shimmer(700, 475)
                 )}`}
               />
-
+              {/* --------Title------ */}
+              <Box
+                alignSelf="flex-end"
+                zIndex="1"
+                m={3}
+                pb={6}
+                color="white"
+                fontFamily="Montserrat"
+                fontSize="xl"
+                w="full"
+              >
+                <Heading as="h1" fontSize="5xl">
+                  {page?.title}
+                </Heading>
+                <Text mt={1}>
+                  {<ConvertPostBody postcontent={page?.subHeading?.raw} />}
+                </Text>
+              </Box>
+              {/* ----Big screen stuff--- */}
               {isGreaterThan900 ? (
                 <Flex w="100%" justifyContent="space-between">
                   <Spacer />
@@ -71,8 +105,12 @@ const AllOtherPages = ({ data }) => {
                 ""
               )}
             </Flex>
+            <Box as="main" mt={3}>
+              <Text as="p" fontSize="lg" fontFamily="Montserrat">
+                {<ConvertPostBody postcontent={page?.content?.raw} />}
+              </Text>
+            </Box>
           </Box>
-          <Box as="main">{/* Main Stuff goes here! */}</Box>
           <Footer />
         </Box>
       </Box>
@@ -105,12 +143,16 @@ export async function getStaticProps(context) {
     page(where: {slug: "${context.params.pageSlug}"}) {
        id
       title
+      subHeading{
+        raw
+      }
       content{
         raw
       }
       slug
       featuredImage{
         url
+        altText
       }
       seo{
         title

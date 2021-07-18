@@ -12,9 +12,8 @@ const FloatingFooter = ({
     <Box
       py={4}
       px={2}
-      // m={2}
+      pb={5}
       w="full"
-      // borderRadius="lg"
       boxShadow="2xl"
       position="fixed"
       left="50%"

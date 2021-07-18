@@ -1,4 +1,3 @@
-import { memo } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -32,6 +31,7 @@ import SocialShareBlock from "../components/blog section componenets/SocialShare
 import { shimmer, toBase64 } from "../lib/imageLoading";
 import ConvertPostBody from "../lib/ConvertPostBody";
 import calculateReadTime from "../lib/calculateReadTime";
+import ScrollToTop from "../components/Layout components/ScrollToTop";
 
 const SinglePostPage = ({ data, relatedArticlesData }) => {
   const article = data ? data.post : {};
@@ -331,12 +331,14 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
 
       {/* -----------Site Footer--------- */}
       <Footer />
+      {/* --------Scroll To Top Btn------ */}
+      <ScrollToTop />
     </>
   );
 };
 
 // Other fetching stuff--------
-export default memo(SinglePostPage);
+export default SinglePostPage;
 
 export async function getStaticPaths() {
   const slugQuery = `{posts {
