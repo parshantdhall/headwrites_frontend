@@ -176,7 +176,23 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
             flexDir="column"
             alignItems="center"
             mx={isGreaterThan900 ? 20 : ""}
+            itemScope
+            itemType="http://schema.org/Article"
           >
+            {/* -------Schema.org for SEO Stuff -------------*/}
+
+            <meta itemProp="datePublished" content={article?.date} />
+            <meta itemProp="dateModified" content={article?.updatedAt} />
+            <meta
+              itemProp="image"
+              content={
+                article.featuredImage
+                  ? article?.featuredImage?.url
+                  : "/logo.svg"
+              }
+            />
+            <meta itemProp="publisher" content="headwrites.com" />
+            {/* ---------------------------------------------------- */}
             <Box maxW="900px">
               {/* -------Category-------- */}
               <HStack justifyContent="space-between" alignItems="center">
@@ -240,6 +256,7 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                 as="h1"
                 color={useColorModeValue("_black", "white")}
                 fontSize={isSmallerThanIp6 ? "3xl" : "4xl"}
+                itemProp="name headline"
               >
                 {article.title}
               </Heading>
@@ -255,6 +272,7 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                 lineHeight="tall"
                 ref={ref}
                 position="relative"
+                itemProp="articleBody"
               >
                 {<ConvertPostBody postcontent={article.content.raw} />}
               </Box>
@@ -298,14 +316,17 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                 />
                 <VStack spacing={1} alignItems="flex-start" p={2}>
                   <Text
+                    itemprop="author"
+                    name={article.author ? article.author.name : "Anon"}
                     as="p"
                     fontSize={isSmallerThanIp6 ? "sm" : "md"}
                     color={useColorModeValue("_black", "white")}
                   >
                     {article.author ? article.author.name : "Anon"}
                   </Text>
+                  {/* -------Date Published------- */}
                   <Text
-                    as="p"
+                    as="time"
                     fontSize={isSmallerThanIp6 ? "xs" : "sm"}
                     color={useColorModeValue("_blue", "_green")}
                   >
@@ -374,6 +395,7 @@ export async function getStaticProps(context) {
     }
     slug
     date
+    updatedAt
     category{
       id
       slug

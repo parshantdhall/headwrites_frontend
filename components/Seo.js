@@ -36,6 +36,7 @@ const Seo = ({
         name="description"
         content={description || defaultSiteDescription}
       />
+      <meta name="image" content={featuredImage || defaultSiteLogo} />
       <meta
         name="robots"
         content={`index, ${doFollowLink ? "follow" : "nofollow"}`}

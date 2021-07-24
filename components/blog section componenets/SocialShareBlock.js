@@ -15,7 +15,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 const SocialShareBlock = ({ title, url, featuredImage }) => {
-  const mainUrl = "http://localhost:3000";
+  const mainUrl = "https://headwrites.com";
   const { hasCopied, onCopy } = useClipboard(mainUrl + url);
   const toast = useToast();
 
