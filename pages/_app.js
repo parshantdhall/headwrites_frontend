@@ -5,12 +5,15 @@ import { CustomTheme } from "../lib/ThemeConfig";
 import "../styles/globals.css";
 // swiper css file
 import "swiper/swiper.min.css";
+import MenuLinkProvider from "../lib/global state/MenuLinkProvider";
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={CustomTheme}>
       <HeadStuff />
-      <Component {...pageProps} />
+      <MenuLinkProvider>
+        <Component {...pageProps} />
+      </MenuLinkProvider>
     </ChakraProvider>
   );
 }

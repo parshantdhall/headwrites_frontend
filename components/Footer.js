@@ -10,10 +10,14 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import moment from "moment";
-
+import { useContext } from "react";
+import { menuLinkContext } from "../lib/global state/context";
 const Footer = () => {
   const copyRightYear = moment().format("yyyy");
   const [isGreaterThan900] = useMediaQuery("(min-width: 850px)");
+  // ---Grabbing global state from context-----
+  const globalState = useContext(menuLinkContext);
+  const { menuLinkData } = globalState;
 
   return (
     <Box
@@ -64,16 +68,19 @@ const Footer = () => {
         </Box>
 
         <Box>
-          <HStack>
+          <HStack spacing={4}>
+            {/*---------Link---------  */}
             <Box role="link cotainer">
               <Link href="/">Home</Link>
             </Box>
-            <Box role="link cotainer">
-              <Link href="/">About</Link>
-            </Box>
-            <Box role="link cotainer">
-              <Link href="/">Contact</Link>
-            </Box>
+            {/* All Other links */}
+            {menuLinkData && menuLinkData.length > 0
+              ? menuLinkData.map((page) => (
+                  <Box role="link cotainer" key={page.id}>
+                    <Link href={`/page/${page.slug}`}>{page.title}</Link>
+                  </Box>
+                ))
+              : ""}
           </HStack>
         </Box>
 

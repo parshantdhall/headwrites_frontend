@@ -1,5 +1,5 @@
 import router from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   HStack,
   VStack,
@@ -10,35 +10,21 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-import gFetch from "../../../lib/gFetch";
+import { menuLinkContext } from "../../../lib/global state/context";
 
 const SideBarBody = () => {
-  const [pageLinks, setPageLinks] = useState([]);
   const [currentSlug, setCurrentSlug] = useState("");
+  // ----global link state----
+  const globalData = useContext(menuLinkContext);
+  const { menuLinkData } = globalData;
+  // ----Color mode hooks----
   const activeLinkCol = useColorModeValue("black", "white");
   const activeLinkBgCol = useColorModeValue("_blue", "green.300");
   // ---current location-----
   const currentLocation = router.query.pageSlug ? router.query.pageSlug : "/";
-
-  // fetching all the links
+  // ---setting initial current location----
   useEffect(() => {
-    (async () => {
-      const pageLinksDataQuery = `{
-      pages{
-        id
-        title
-        slug
-      }
-    }
-    `;
-      try {
-        const { data } = await gFetch(pageLinksDataQuery);
-        setPageLinks(data?.pages);
-        setCurrentSlug(currentLocation);
-      } catch (e) {
-        console.dir(e);
-      }
-    })();
+    setCurrentSlug(currentLocation);
   }, [currentLocation]);
 
   return (
@@ -79,8 +65,8 @@ const SideBarBody = () => {
       </Link>
 
       {/* All Other pages */}
-      {pageLinks && pageLinks.length > 0
-        ? pageLinks.map((page) => (
+      {menuLinkData && menuLinkData.length > 0
+        ? menuLinkData.map((page) => (
             <Link href={`/page/${page.slug}`} key={page.id} passHref>
               <HStack spacing="3" w="full" cursor="pointer">
                 <Text

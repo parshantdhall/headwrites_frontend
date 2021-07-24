@@ -13,9 +13,9 @@ const SideBarFooter = () => {
   useEffect(() => {
     (async () => {
       const socialMediaDataQuery = `{
-      socialMedias{
-        social_media_platform,
-        social_link
+  socialMedias{
+    socialMediaPlatform
+    socialLink
   }
 }
     `;
@@ -30,10 +30,10 @@ const SideBarFooter = () => {
 
   const findSocialLink = (platformName) => {
     const foundItem = socialMediaData.find(
-      (item) => item.social_media_platform === platformName
+      (item) => item.socialMediaPlatform === platformName
     );
     if (foundItem) {
-      return foundItem.social_link;
+      return foundItem.socialLink;
     }
     return "/";
   };
