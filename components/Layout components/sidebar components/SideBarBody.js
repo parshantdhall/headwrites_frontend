@@ -12,7 +12,7 @@ import Link from "next/link";
 
 import { menuLinkContext } from "../../../lib/global state/context";
 
-const SideBarBody = () => {
+const SideBarBody = ({ closeDrawer }) => {
   const [currentSlug, setCurrentSlug] = useState("");
   // ----global link state----
   const globalData = useContext(menuLinkContext);
@@ -31,7 +31,7 @@ const SideBarBody = () => {
     <VStack spacing="30" w="full" my={4} px={3}>
       {/* -----Home------- */}
       <Link href="/" passHref>
-        <HStack spacing="3" w="full" cursor="pointer">
+        <HStack spacing="3" w="full" cursor="pointer" onClick={closeDrawer}>
           {/* <Box
             px="8px"
             py="6px"
@@ -68,7 +68,12 @@ const SideBarBody = () => {
       {menuLinkData && menuLinkData.length > 0
         ? menuLinkData.map((page) => (
             <Link href={`/page/${page.slug}`} key={page.id} passHref>
-              <HStack spacing="3" w="full" cursor="pointer">
+              <HStack
+                spacing="3"
+                w="full"
+                cursor="pointer"
+                onClick={closeDrawer}
+              >
                 <Text
                   as="p"
                   fontWeight="bold"

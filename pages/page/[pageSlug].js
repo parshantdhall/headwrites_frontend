@@ -18,6 +18,7 @@ import Footer from "../../components/Footer";
 import gFetch from "../../lib/gFetch";
 import { shimmer, toBase64 } from "../../lib/imageLoading";
 import ConvertPostBody from "../../lib/ConvertPostBody";
+import { grayscale } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 const AllOtherPages = ({ data }) => {
   const { page } = data;
@@ -61,19 +62,25 @@ const AllOtherPages = ({ data }) => {
               minW="100%"
               minH="md"
               maxH="lg"
+              bgColor={!page.featuredImage ? "gray.300" : ""}
             >
+              {/* ----First check if there is featured image */}
               {/* --------Featured Image----- */}
-              <Image
-                src={page?.featuredImage?.url}
-                alt={page?.featuredImage?.altText}
-                layout="fill"
-                objectFit="cover"
-                quality={100}
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(700, 475)
-                )}`}
-              />
+              {page && page.featuredImage ? (
+                <Image
+                  src={page?.featuredImage?.url}
+                  alt={page?.featuredImage?.altText}
+                  layout="fill"
+                  objectFit="cover"
+                  quality={100}
+                  placeholder="blur"
+                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                    shimmer(700, 475)
+                  )}`}
+                />
+              ) : (
+                ""
+              )}
               {/* --------Title------ */}
               <Box
                 alignSelf="flex-end"

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   Box,
+  Flex,
   HStack,
   Image,
   Spacer,
@@ -29,19 +30,30 @@ const Footer = () => {
       boxShadow="-1px -1px 4px rgba(0,0,0,.2)"
       width="100%"
       position="absolute"
-      bottom={isGreaterThan900 ? "-150" : "-132"}
+      bottom={isGreaterThan900 ? "-90" : "-123"}
       sx={{
         /* These media queries are for the server side rendering
           becoz u cant use the usemediaquery hook at initial load
           */
         "@media screen and (min-width: 900px)": {
-          bottom: "-150",
+          bottom: "-90",
         },
       }}
       right="0"
     >
-      {/* <Flex direction="row" justifyContent="space-around" alignItems="baseline"> */}
-      <VStack alignItems="center" justifyContent="center" textAlign="center">
+      <Flex
+        direction={isGreaterThan900 ? "row" : "column"}
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          /* These media queries are for the server side rendering
+          becoz u cant use the usemediaquery hook at initial load
+          */
+          "@media screen and (min-width: 900px)": {
+            flexDirection: "row",
+          },
+        }}
+      >
         <Box
           maxW={isGreaterThan900 ? "20%" : "40%"}
           sx={{
@@ -52,7 +64,7 @@ const Footer = () => {
               maxW: "20%",
             },
           }}
-          mb={3}
+          pb={3}
           cursor="pointer"
           margin="5px auto"
         >
@@ -66,7 +78,7 @@ const Footer = () => {
             />
           </Link>
         </Box>
-
+        <Spacer />
         <Box>
           <HStack spacing={4}>
             {/*---------Link---------  */}
@@ -88,9 +100,7 @@ const Footer = () => {
         <Text as="p" color="_darkGrey" fontSize="xs">
           © {copyRightYear}-present Headwrites. All Rights Reserved.
         </Text>
-      </VStack>
-      {/* All Links */}
-      {/* </Flex> */}
+      </Flex>
     </Box>
   );
 };

@@ -33,7 +33,7 @@ const SideDrawer = () => {
               <SideBarHeader />
             </DrawerHeader>
             <DrawerBody>
-              <SideBarBody />
+              <SideBarBody closeDrawer={onClose} />
             </DrawerBody>
             <DrawerFooter>
               <SideBarFooter />

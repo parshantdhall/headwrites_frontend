@@ -145,17 +145,22 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
             overflow="hidden"
             zIndex="-1"
           >
-            <Image
-              src={article?.featuredImage?.url}
-              alt={article.featuredImage?.altText}
-              layout="fill"
-              objectFit="cover"
-              quality={100}
-              placeholder="blur"
-              blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                shimmer(700, 475)
-              )}`}
-            />
+            {/* check if there is featured image */}
+            {article && article.featuredImage ? (
+              <Image
+                src={article?.featuredImage?.url}
+                alt={article.featuredImage?.altText}
+                layout="fill"
+                objectFit="cover"
+                quality={100}
+                placeholder="blur"
+                blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                  shimmer(700, 475)
+                )}`}
+              />
+            ) : (
+              ""
+            )}
           </Box>
           {/* -------------------------------Article Content-------------------------- */}
           <Box
