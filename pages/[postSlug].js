@@ -316,7 +316,7 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                 />
                 <VStack spacing={1} alignItems="flex-start" p={2}>
                   <Text
-                    itemprop="author"
+                    itemProp="author"
                     name={article.author ? article.author.name : "Anon"}
                     as="p"
                     fontSize={isSmallerThanIp6 ? "sm" : "md"}

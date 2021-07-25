@@ -11,7 +11,8 @@ const Seo = ({
   keywords,
 }) => {
   const defaultSiteTitle = "Headwrites - Writings that matters";
-  const defaultSiteDescription = "";
+  const defaultSiteDescription =
+    "Writings that matter in your coding life by providing articles based on programming, programmer's health, lifestyle, and other daily life tips and tricks.";
   const [defaultUrl, setDefaultUrl] = useState("/"); //NOTE: instead of empty string add the path to index page
   const defaultSiteLogo = "/logo.svg"; //Path to logo
   const defaultKeywords = "";
