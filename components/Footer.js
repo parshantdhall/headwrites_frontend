@@ -30,13 +30,13 @@ const Footer = () => {
       boxShadow="-1px -1px 4px rgba(0,0,0,.2)"
       width="100%"
       position="absolute"
-      bottom={isGreaterThan900 ? "-90" : "-123"}
+      bottom={isGreaterThan900 ? "-100" : "-123"}
       sx={{
         /* These media queries are for the server side rendering
           becoz u cant use the usemediaquery hook at initial load
           */
         "@media screen and (min-width: 900px)": {
-          bottom: "-90",
+          bottom: "-110",
         },
       }}
       right="0"
