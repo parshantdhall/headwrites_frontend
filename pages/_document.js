@@ -20,6 +20,23 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;500&display=swap"
             rel="stylesheet"
           ></link>
+          {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-T0XDYHGL98"
+          ></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.GOOGLE_ANALYTICS}', {
+              page_path: window.location.pathname,
+            });
+          `,
+            }}
+          />
         </Head>
         <body>
           <Main />
