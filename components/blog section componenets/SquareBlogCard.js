@@ -31,7 +31,7 @@ const SquareBlogCard = ({ article, indexNum }) => {
 
   const categoryColor = useColorModeValue("_blue", "_green");
   // Estimated readtime
-  // console.dir(article);
+  console.dir(article?.featuredImage);
   const ert = calculateReadTime(article?.content?.text);
   return (
     <motion.div

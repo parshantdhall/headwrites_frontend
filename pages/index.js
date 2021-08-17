@@ -20,6 +20,7 @@ export async function getStaticProps() {
     }
     featuredImage{
       url
+      altText
     }
     featuredPost
     author{

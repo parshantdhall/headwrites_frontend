@@ -403,6 +403,7 @@ export async function getStaticProps(context) {
     }
     featuredImage{
       url
+      altText
     }
     featuredPost
     author{
