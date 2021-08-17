@@ -21,7 +21,8 @@ const FeaturedArticleSlider = ({ articleData }) => {
       : [];
     setFilteredArtData(filteredPosts);
   }, [articleData]);
-
+  console.dir(articleData);
+  console.dir(filteredArtData);
   return (
     <Box cursor="grab" width="100%">
       <Swiper

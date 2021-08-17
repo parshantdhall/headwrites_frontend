@@ -1,7 +1,5 @@
-import { useContext } from "react";
 import MainPageComponents from "../components/MainPageComponents";
 import gFetch from "../lib/gFetch";
-import { menuLinkContext } from "../lib/global state/context";
 
 export default function Home({ artData, catData }) {
   return <MainPageComponents artData={artData} catData={catData} />;

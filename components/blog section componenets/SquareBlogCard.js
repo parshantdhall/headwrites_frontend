@@ -90,7 +90,8 @@ const SquareBlogCard = ({ article, indexNum }) => {
               bottom="0"
               m={3}
               borderRadius="3xl"
-              minW={isSmallerThanIp6 ? "90" : "93.75%"}
+              minW="80%"
+              w="90%"
             >
               {/*----------- Category ----------*/}
               <HStack justifyContent="space-between" alignItems="center">
