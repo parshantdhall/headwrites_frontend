@@ -1,5 +1,5 @@
 import { IconButton } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { FaArrowUp } from "react-icons/fa";
 
 const ScrollToTop = () => {
@@ -33,4 +33,4 @@ const ScrollToTop = () => {
   );
 };
 
-export default ScrollToTop;
+export default memo(ScrollToTop);

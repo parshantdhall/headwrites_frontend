@@ -1,5 +1,5 @@
 import router from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import {
   HStack,
   VStack,
@@ -104,4 +104,4 @@ const SideBarBody = ({ closeDrawer }) => {
   );
 };
 
-export default SideBarBody;
+export default memo(SideBarBody);

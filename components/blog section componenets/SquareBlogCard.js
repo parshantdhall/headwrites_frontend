@@ -142,7 +142,7 @@ const SquareBlogCard = ({ article, indexNum }) => {
                     aria-label="author profile image"
                     size={isSmallerThanIp6 ? "xs" : "sm"}
                     name={article.author ? article.author.name : "Anon"}
-                    src={article.author ? article.author?.picture : ""}
+                    src={article.author ? article.author?.picture?.url : ""}
                   />
                   <Box>
                     <Text

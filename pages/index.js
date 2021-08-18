@@ -23,6 +23,9 @@ export async function getStaticProps() {
     featuredPost
     author{
       name
+      picture{
+        url
+      }
     }
     postTags{
       tagName

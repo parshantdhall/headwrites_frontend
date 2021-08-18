@@ -7,8 +7,8 @@ import {
   DrawerCloseButton,
   DrawerFooter,
   DrawerHeader,
-  // useBreakpointValue,
 } from "@chakra-ui/react";
+import { memo } from "react";
 import OpenSideBarBtn from "./sidebar components/OpenSideBarBtn";
 import SideBarBody from "./sidebar components/SideBarBody";
 import SideBarFooter from "./sidebar components/SideBarFooter";
@@ -16,9 +16,6 @@ import SideBarHeader from "./sidebar components/SideBarHeader";
 
 const SideDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const breakPointVar = useBreakpointValue({
-
-  // })
 
   return (
     <>
@@ -45,4 +42,4 @@ const SideDrawer = () => {
   );
 };
 
-export default SideDrawer;
+export default memo(SideDrawer);

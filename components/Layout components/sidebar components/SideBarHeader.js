@@ -1,5 +1,6 @@
 import { VStack, Box, Image, useColorModeValue } from "@chakra-ui/react";
 import Link from "next/link";
+import { memo } from "react";
 
 const SideBarHeader = () => {
   return (
@@ -33,4 +34,4 @@ const SideBarHeader = () => {
   );
 };
 
-export default SideBarHeader;
+export default memo(SideBarHeader);

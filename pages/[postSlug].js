@@ -66,6 +66,7 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
 
   // ----------Cal reading time---------
   const ert = calculateReadTime(article?.content?.text);
+  console.dir(article.author);
 
   return (
     <>
@@ -408,6 +409,9 @@ export async function getStaticProps(context) {
     featuredPost
     author{
       name
+      picture{
+        url
+      }
     }
     postTags{
       id
