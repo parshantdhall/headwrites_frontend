@@ -78,10 +78,10 @@ export const getServerSideProps = async ({ res }) => {
         "category",
         "story",
         "page",
-        "___next_launcher",
-        "___vc_bridge",
+        "___next_launcher.js",
+        "___vc_bridge.js",
         "node_modules",
-        "package",
+        "package.json",
       ].includes(staticPage);
     })
     .map((staticPagePath) => {
