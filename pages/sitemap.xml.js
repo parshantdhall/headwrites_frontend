@@ -59,7 +59,12 @@ export const getServerSideProps = async ({ res }) => {
   //   -------Fetching ends here----------------
 
   const staticPages = fs
-    .readdirSync("pages")
+    .readdirSync(
+      {
+        development: "pages",
+        production: "./",
+      }[process.env.NODE_ENV]
+    )
     .filter((staticPage) => {
       //  all excluded files
       return ![
