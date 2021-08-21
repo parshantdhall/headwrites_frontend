@@ -32,9 +32,7 @@ const SideDrawer = () => {
             <DrawerBody>
               <SideBarBody closeDrawer={onClose} />
             </DrawerBody>
-            <DrawerFooter>
-              <SideBarFooter />
-            </DrawerFooter>
+            <DrawerFooter>{/* <SideBarFooter /> */}</DrawerFooter>
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>

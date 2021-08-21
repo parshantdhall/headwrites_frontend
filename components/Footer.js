@@ -8,7 +8,6 @@ import {
   Text,
   useColorModeValue,
   useMediaQuery,
-  VStack,
 } from "@chakra-ui/react";
 import moment from "moment";
 import { useContext } from "react";
@@ -64,7 +63,7 @@ const Footer = () => {
               maxW: "20%",
             },
           }}
-          pb={3}
+          // pb={3}
           cursor="pointer"
           margin="5px auto"
         >
@@ -82,13 +81,17 @@ const Footer = () => {
         <Box>
           <HStack spacing={4}>
             {/*---------Link---------  */}
-            <Box role="link cotainer">
+            <Box role="link cotainer" fontSize={isGreaterThan900 ? "md" : "sm"}>
               <Link href="/">Home</Link>
             </Box>
             {/* All Other links */}
             {menuLinkData && menuLinkData.length > 0
               ? menuLinkData.map((page) => (
-                  <Box role="link cotainer" key={page.id}>
+                  <Box
+                    role="link cotainer"
+                    key={page.id}
+                    fontSize={isGreaterThan900 ? "md" : "sm"}
+                  >
                     <Link href={`/page/${page.slug}`}>{page.title}</Link>
                   </Box>
                 ))
@@ -101,6 +104,10 @@ const Footer = () => {
           © {copyRightYear}-present Headwrites. All Rights Reserved.
         </Text>
       </Flex>
+      <Text textAlign="center" fontSize="xs" m={0}>
+        Design and developed with ❤️ by{" "}
+        {<Link href="mailto:parshantdhall@headwrites.com">Parshant Dhall</Link>}
+      </Text>
     </Box>
   );
 };
