@@ -7,6 +7,7 @@ const FloatingFooter = ({
   featuredImage,
   articleInView,
   tagsInView,
+  description,
 }) => {
   return (
     <Box
@@ -29,6 +30,7 @@ const FloatingFooter = ({
           title={title}
           url={url}
           featuredImage={featuredImage}
+          description={description}
         />
       </Box>
     </Box>

@@ -304,6 +304,9 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                   title={article.title}
                   url={router.asPath}
                   featuredImage={article?.FeaturedImage?.url}
+                  description={
+                    seoStuff && seoStuff.description ? seoStuff.description : ""
+                  }
                 />
               </Box>
               <Divider />
@@ -350,6 +353,9 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
           articleInView={articleInView}
           tagsInView={tagsInview}
           featuredImage={article?.FeaturedImage?.url}
+          description={
+            seoStuff && seoStuff.description ? seoStuff.description : ""
+          }
         />
       ) : (
         ""

@@ -1,20 +1,23 @@
 import { HStack, Icon, useClipboard, useToast } from "@chakra-ui/react";
 import {
-  EmailShareButton,
+  LinkedinShareButton,
   FacebookShareButton,
   PinterestShareButton,
   WhatsappShareButton,
   TwitterShareButton,
+  RedditShareButton,
 } from "react-share";
 import {
   FaClipboard,
   FaEnvelope,
   FaFacebook,
+  FaLinkedin,
   FaPinterest,
+  FaReddit,
   FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa";
-const SocialShareBlock = ({ title, url, featuredImage }) => {
+const SocialShareBlock = ({ title, url, featuredImage, description }) => {
   const mainUrl = "https://headwrites.com";
   const { hasCopied, onCopy } = useClipboard(mainUrl + url);
   const toast = useToast();
@@ -27,30 +30,32 @@ const SocialShareBlock = ({ title, url, featuredImage }) => {
       isClosable: true,
     });
   }
-
+  const width = 6;
+  const height = 6;
   return (
     <HStack spacing={5} justifyContent="space-evenly">
-      <EmailShareButton
-        subject={"Shared Headwrites Article"}
-        body={title}
+      <LinkedinShareButton
+        source="Headwrites.com"
+        title={title}
         url={`${mainUrl}${url}`}
+        summary={description}
       >
         <Icon
-          as={FaEnvelope}
-          role="share article via email"
-          aria-label="Share to Email Button"
-          w={7}
-          h={7}
-          color="gray.600"
+          as={FaLinkedin}
+          role="share article via LinkedIn"
+          aria-label="Share to LinkedIn Button"
+          w={width}
+          h={height}
+          color="blue.600"
         />
-      </EmailShareButton>
-      <FacebookShareButton url={`${mainUrl}${url}`} hashtag="#headwrites">
+      </LinkedinShareButton>
+      <FacebookShareButton url={`${mainUrl}${url}`} hashtag="#headwrites.com">
         <Icon
           as={FaFacebook}
           role="share article at Facebook"
           aria-label="Share to Facebook Button"
-          w={7}
-          h={7}
+          w={width}
+          h={height}
           color="blue.400"
         />
       </FacebookShareButton>
@@ -63,8 +68,8 @@ const SocialShareBlock = ({ title, url, featuredImage }) => {
           as={FaPinterest}
           role="share article at Pinterest"
           aria-label="Share to Pinterest Button"
-          w={7}
-          h={7}
+          w={width}
+          h={height}
           color="red.400"
         />
       </PinterestShareButton>
@@ -73,8 +78,8 @@ const SocialShareBlock = ({ title, url, featuredImage }) => {
           as={FaWhatsapp}
           role="share article at Whatsapp"
           aria-label="Share to Whatsapp button"
-          w={7}
-          h={7}
+          w={width}
+          h={height}
           color="green.400"
         />
       </WhatsappShareButton>
@@ -87,19 +92,28 @@ const SocialShareBlock = ({ title, url, featuredImage }) => {
           as={FaTwitter}
           role="share article at Twitter"
           aria-label="Share to Twitter Button"
-          w={7}
-          h={7}
+          w={width}
+          h={height}
           color="cyan.400"
         />
       </TwitterShareButton>
-
+      <RedditShareButton url={`${mainUrl}${url}`} title={title}>
+        <Icon
+          as={FaReddit}
+          role="share article at Reddit"
+          aria-label="Share to Reddit Button"
+          w={width}
+          h={height}
+          color="orange.400"
+        />
+      </RedditShareButton>
       <Icon
         as={FaClipboard}
         role="Copy Link"
         aria-label="Copy Link"
-        w={7}
-        h={7}
-        color="orange.400"
+        w={width}
+        h={height}
+        color="red.400"
         cursor="pointer"
         onClick={onCopy}
       />
