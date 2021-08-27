@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   Box,
   Button,
@@ -23,15 +24,23 @@ import ColorModeSwitch from "../components/Layout components/ColorModeSwitch";
 import gFetch from "../lib/gFetch";
 import parseDate from "../lib/parseDate";
 import Seo from "../components/Seo";
-import FloatingFooter from "../components/blog section componenets/FloatingFooter";
-import FootSlider from "../components/FootSlider";
-import Footer from "../components/Footer";
 import { useInView } from "react-intersection-observer";
-import SocialShareBlock from "../components/blog section componenets/SocialShareBlock";
 import { shimmer, toBase64 } from "../lib/imageLoading";
 import ConvertPostBody from "../lib/ConvertPostBody";
 import calculateReadTime from "../lib/calculateReadTime";
-import ScrollToTop from "../components/Layout components/ScrollToTop";
+
+// Dynamic imports
+const DynamicFloatingFooter = dynamic(() =>
+  import("../components/blog section componenets/FloatingFooter")
+);
+const DynamicFootSlider = dynamic(() => import("../components/FootSlider"));
+const DynamicScrollToTop = dynamic(() =>
+  import("../components/Layout components/ScrollToTop")
+);
+const DynamicFooter = dynamic(() => import("../components/Footer"));
+const DynamicSocialShareBlock = dynamic(() =>
+  import("../components/blog section componenets/SocialShareBlock")
+);
 
 const SinglePostPage = ({ data, relatedArticlesData }) => {
   const article = data ? data.post : {};
@@ -300,7 +309,7 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
                 maxW="lg"
                 minW="200px"
               >
-                <SocialShareBlock
+                <DynamicSocialShareBlock
                   title={article.title}
                   url={router.asPath}
                   featuredImage={article?.FeaturedImage?.url}
@@ -343,11 +352,11 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
       </Box>
       {/* ----------Related article slider----------- */}
 
-      <FootSlider artData={relatedArticlesArray} />
+      <DynamicFootSlider artData={relatedArticlesArray} />
 
       {/* --------Social Media Floating footer---------- */}
       {!isGreaterThan900 ? (
-        <FloatingFooter
+        <DynamicFloatingFooter
           title={article.title}
           url={router.asPath}
           articleInView={articleInView}
@@ -362,9 +371,9 @@ const SinglePostPage = ({ data, relatedArticlesData }) => {
       )}
 
       {/* -----------Site Footer--------- */}
-      <Footer />
+      <DynamicFooter />
       {/* --------Scroll To Top Btn------ */}
-      <ScrollToTop />
+      <DynamicScrollToTop />
     </>
   );
 };

@@ -6,13 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check": "npx next lint"
+    "check": "npx next lint",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
     "@chakra-ui/react": "^1.1.6",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
+    "@next/bundle-analyzer": "^11.1.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "framer-motion": "^3.2.2-rc.1",
     "fuzzy-search": "^3.2.1",

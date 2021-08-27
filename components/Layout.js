@@ -1,13 +1,20 @@
+import dynamic from "next/dynamic";
 import { Box, useMediaQuery } from "@chakra-ui/react";
 
-import PageHeader from "./Layout components/PageHeader";
 import Grettings from "./Layout components/Grettings";
 import SearchInput from "./searh and filter/SearchInput";
 import SideNav from "./Layout components/SideNav";
 import ColorModeSwitch from "./Layout components/ColorModeSwitch";
 import Seo from "./Seo";
-import Footer from "./Footer";
-import ScrollToTop from "./Layout components/ScrollToTop";
+
+// Dynamic imports
+const DynamicFooter = dynamic(() => import("./Footer"));
+const DynamicScrollToTop = dynamic(() =>
+  import("./Layout components/ScrollToTop")
+);
+const DynamicPageHeader = dynamic(() =>
+  import("./Layout components/PageHeader")
+);
 
 const Layout = ({ children, searchKeyword, setSearchKeyword }) => {
   // Using media queries
@@ -33,7 +40,7 @@ const Layout = ({ children, searchKeyword, setSearchKeyword }) => {
         pos="relative"
       >
         <Box position="relative" minH="100vh">
-          {isGreaterThan900 ? "" : <PageHeader />}
+          {isGreaterThan900 ? "" : <DynamicPageHeader />}
           <Box px={5} mt={5} maxW="100%" minW="100%">
             <Box
               display={isGreaterThan900 ? "flex" : "block"}
@@ -59,11 +66,11 @@ const Layout = ({ children, searchKeyword, setSearchKeyword }) => {
             </Box>
           </Box>
           <Box as="main">{children}</Box>
-          <Footer />
+          <DynamicFooter />
         </Box>
       </Box>
       {/* ------FLoating scroll to top btn------ */}
-      <ScrollToTop />
+      <DynamicScrollToTop />
     </>
   );
 };
