@@ -96,7 +96,11 @@ const Footer = () => {
       </Flex>
       <Text textAlign="center" fontSize="xs" m={0}>
         Design and developed with ❤️ by{" "}
-        {<Link href="mailto:parshantdhall@headwrites.com">Parshant Dhall</Link>}
+        {
+          <Link href="https://www.linkedin.com/in/parshant-dhall-0b29701a1/">
+            Parshant Dhall
+          </Link>
+        }
       </Text>
     </Box>
   );
